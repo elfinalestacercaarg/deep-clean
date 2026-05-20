@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Deep Clean v3.6 - Limpiador profundo y seguro para Windows. Liberá GB de espacio sin tocar archivos importantes.">
+    <meta name="theme-color" content="#10b981">
+    <title>Deep Clean v3.6 • Limpiador profundo para Windows</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-bg: #09090b;
+            --color-bg-card: #18181b;
+            --color-border: #27272a;
+            --color-accent: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--color-bg);
+            color: #e4e4e7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Gradient hero */
+        .hero-gradient {
+            background:
+                radial-gradient(ellipse at top left, rgba(16, 185, 129, 0.15), transparent 50%),
+                radial-gradient(ellipse at top right, rgba(59, 130, 246, 0.1), transparent 50%);
+        }
+
+        /* Glow del botón principal */
+        .btn-glow {
+            box-shadow:
+                0 0 0 1px rgba(16, 185, 129, 0.5),
+                0 0 30px rgba(16, 185, 129, 0.3),
+                0 20px 60px -10px rgba(16, 185, 129, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 0 0 1px rgba(16, 185, 129, 0.8),
+                0 0 50px rgba(16, 185, 129, 0.4),
+                0 30px 80px -10px rgba(16, 185, 129, 0.5);
+        }
+
+        /* Terminal mock */
+        .terminal {
+            background: #0d1117;
+            border: 1px solid #1e2329;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .terminal-header {
+            background: #1e2329;
+            padding: 12px 16px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideRight {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+        }
+
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .animate-fadeIn { animation: fadeIn 0.6s ease-out both; }
+        .animate-slideRight { animation: slideRight 0.5s ease-out both; }
+        .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+        /* Card hover */
+        .feature-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        /* Step number */
+        .step-number {
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        /* FAQ */
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary { cursor: pointer; }
+        .faq-item[open] .faq-icon { transform: rotate(180deg); }
+        .faq-icon { transition: transform 0.2s ease; }
+
+        /* Section title */
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200">
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/50 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                    <i class="fa-solid fa-broom text-white"></i>
+                </div>
+                <div class="font-display">
+                    <span class="font-bold text-xl tracking-tighter">Deep</span><span class="font-semibold text-emerald-500">Clean</span>
+                    <span class="text-xs text-zinc-500 ml-1">v3.6</span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-x-6 text-sm text-zinc-400">
+                <a href="#features" class="hover:text-white transition-colors">Características</a>
+                <a href="#como-funciona" class="hover:text-white transition-colors">Cómo funciona</a>
+                <a href="#instrucciones" class="hover:text-white transition-colors">Instrucciones</a>
+                <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+            </div>
+
+            <a href="#descargar" class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-2xl text-sm font-semibold transition-colors flex items-center gap-x-2">
+                <i class="fa-solid fa-download"></i>
+                Descargar
+            </a>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO ==================== -->
+    <header class="hero-gradient pt-12 sm:pt-20 pb-20">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-x-2 bg-zinc-900/80 border border-zinc-800 px-4 py-2 rounded-3xl mb-8 text-sm animate-fadeIn">
+                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse-glow"></span>
+                <span class="text-zinc-300">Versión 3.6 disponible</span>
+                <span class="text-zinc-600">•</span>
+                <span class="text-emerald-400">100% gratis</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="font-display text-5xl sm:text-7xl md:text-8xl font-bold tracking-tighter leading-[0.95] mb-6 animate-fadeIn">
+                Liberá GB<br>
+                <span class="bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent">
+                    en minutos
+                </span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-lg sm:text-xl text-zinc-400 mb-10 animate-fadeIn" style="animation-delay: 0.1s">
+                Limpiador profundo y <strong class="text-zinc-200">100% seguro</strong> para Windows.
+                Borra cache, temporales y archivos basura del sistema sin tocar nada importante.
+            </p>
+
+            <!-- CTA buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fadeIn" style="animation-delay: 0.2s">
+                <a href="#descargar" class="btn-glow bg-emerald-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg inline-flex items-center gap-x-3">
+                    <i class="fa-solid fa-download text-xl"></i>
+                    Descargar v3.6
+                    <span class="text-sm font-normal text-emerald-200 hidden sm:inline">(.bat • 12 KB)</span>
+                </a>
+                <a href="#instrucciones" class="border border-zinc-700 hover:bg-zinc-900 px-8 py-4 rounded-2xl font-semibold transition-colors">
+                    Ver instrucciones
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 max-w-2xl mx-auto gap-4 sm:gap-8 mt-16 animate-fadeIn" style="animation-delay: 0.3s">
+                <div class="text-center">
+                    <div class="font-display text-3xl sm:text-4xl font-bold text-emerald-400">12</div>
+                    <div class="text-xs sm:text-sm text-zinc-500 mt-1">Pasos de limpieza</div>
+                </div>
+                <div class="text-center">
+                    <div class="font-display text-3xl sm:text-4xl font-bold text-emerald-400">~5 GB</div>
+                    <div class="text-xs sm:text-sm text-zinc-500 mt-1">Liberados en promedio</div>
+                </div>
+                <div class="text-center">
+                    <div class="font-display text-3xl sm:text-4xl font-bold text-emerald-400">3 min</div>
+                    <div class="text-xs sm:text-sm text-zinc-500 mt-1">Duración promedio</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== TERMINAL PREVIEW ==================== -->
+    <section class="max-w-4xl mx-auto px-6 -mt-12 mb-24">
+        <div class="terminal shadow-2xl shadow-black/50">
+            <div class="terminal-header">
+                <div class="terminal-dot bg-red-500"></div>
+                <div class="terminal-dot bg-yellow-500"></div>
+                <div class="terminal-dot bg-green-500"></div>
+                <span class="text-zinc-500 text-xs ml-3">Deep Clean v3.6 - Limpiador Windows</span>
+            </div>
+            <div class="p-6 text-zinc-300">
+                <pre class="text-xs sm:text-sm overflow-x-auto"><span class="text-emerald-400">============================================================</span>
+   <span class="text-white font-bold">DEEP CLEAN v3.6 - Limpieza profesional Windows</span>
+   Por Nahue Alzogaray | Chajari, Entre Rios
+<span class="text-emerald-400">============================================================</span>
+
+   Elegi el modo de limpieza:
+
+     <span class="text-zinc-500">[1]</span> MODO SAFE      - Solo lo basico
+     <span class="text-zinc-500">[2]</span> MODO COMPLETO  - Todo (recomendado)
+     <span class="text-zinc-500">[3]</span> MODO PERSONALIZADO - Vos elegis
+
+   Tu eleccion: <span class="text-emerald-400">2</span>
+
+   <span class="text-emerald-400">[OK]</span>   Punto de restauracion creado
+   <span class="text-emerald-400">[OK]</span>   [1/12] Temporales del usuario limpiados
+   <span class="text-emerald-400">[OK]</span>   [2/12] Temporales de Windows limpiados
+   <span class="text-emerald-400">[OK]</span>   [3/12] Prefetch limpiado
+   <span class="text-emerald-400">[OK]</span>   [4/12] Miniaturas e iconos
+   ...
+
+   <span class="text-emerald-400">============================================================</span>
+            <span class="text-white font-bold">LIMPIEZA COMPLETADA CON EXITO</span>
+   <span class="text-emerald-400">============================================================</span>
+
+     Espacio liberado:   <span class="text-emerald-400 font-bold">~5.2 GB</span></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FEATURES ==================== -->
+    <section id="features" class="max-w-6xl mx-auto px-6 py-20">
+        <div class="text-center mb-16">
+            <span class="text-emerald-500 font-semibold text-sm tracking-widest uppercase">Qué limpia</span>
+            <h2 class="section-title mt-2">Limpieza profunda<br>en 12 categorías</h2>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="feature-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2 font-display">Temporales</h3>
+                <p class="text-sm text-zinc-400">Carpetas Temp del usuario y de Windows. Pueden tener cientos de MB.</p>
+            </div>
+
+            <div class="feature-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2 font-display">Prefetch</h3>
+                <p class="text-sm text-zinc-400">Archivos de pre-carga de Windows que ya no se necesitan.</p>
+            </div>
+
+            <div class="feature-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-image"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2 font-display">Miniaturas e iconos</h3>
+                <p class="text-sm text-zinc-400">Cache de previsualizaciones que se regenera automáticamente.</p>
+            </div>
+
+            <div class="feature-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-trash"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2 font-display">Papelera y recientes</h3>
+                <p class="text-sm text-zinc-400">Vacía la papelera y limpia archivos recientes acumulados.</p>
+            </div>
+
+            <div class="feature-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2 font-display">Cache DNS</h3>
+                <p class="text-sm text-zinc-400">Limpia el cache de DNS para mejorar la velocidad de internet.</p>
+            </div>
+
+            <div class="feature-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2 font-display">Reportes de errores</h3>
+                <p class="text-sm text-zinc-400">Crash dumps y logs de errores que ocupan espacio sin propósito.</p>
+            </div>
+
+            <div class="feature-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-windows"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2 font-display">Windows Update</h3>
+                <p class="text-sm text-zinc-400">Cache de actualizaciones de Windows. Suele liberar varios GB.</p>
+            </div>
+
+            <div class="feature-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2 font-display">Navegadores</h3>
+                <p class="text-sm text-zinc-400">Cache de Chrome, Edge, Firefox y Brave. Sin tocar contraseñas.</p>
+            </div>
+
+            <div class="feature-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="w-12 h-12 bg-emerald-600/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2 font-display">Dev Tools <span class="text-xs bg-emerald-600/20 text-emerald-400 px-2 py-0.5 rounded-full ml-2">NUEVO</span></h3>
+                <p class="text-sm text-zinc-400">VS Code, NPM, Yarn, Cypress. Para desarrolladores.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CÓMO FUNCIONA ==================== -->
+    <section id="como-funciona" class="bg-zinc-900/50 border-y border-zinc-800 py-20">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-emerald-500 font-semibold text-sm tracking-widest uppercase">Proceso simple</span>
+                <h2 class="section-title mt-2">Cómo funciona</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="step-number text-7xl mb-4">01</div>
+                    <h3 class="font-semibold text-xl mb-3 font-display">Descargá</h3>
+                    <p class="text-zinc-400">Bajá el archivo <code class="text-emerald-400 font-mono text-sm">deep-clean-v3.6.bat</code> y guardalo donde quieras.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="step-number text-7xl mb-4">02</div>
+                    <h3 class="font-semibold text-xl mb-3 font-display">Ejecutá</h3>
+                    <p class="text-zinc-400">Click derecho → <strong class="text-zinc-200">"Ejecutar como administrador"</strong>. El script hace todo solo.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="step-number text-7xl mb-4">03</div>
+                    <h3 class="font-semibold text-xl mb-3 font-display">Disfrutá</h3>
+                    <p class="text-zinc-400">Mirá cuántos GB liberaste. Reiniciá si querés y notá la diferencia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== INSTRUCCIONES DETALLADAS ==================== -->
+    <section id="instrucciones" class="max-w-4xl mx-auto px-6 py-20">
+        <div class="text-center mb-12">
+            <span class="text-emerald-500 font-semibold text-sm tracking-widest uppercase">Paso a paso</span>
+            <h2 class="section-title mt-2">Instrucciones detalladas</h2>
+        </div>
+
+        <div class="space-y-4">
+            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center font-bold">1</div>
+                <div>
+                    <h3 class="font-semibold mb-1 font-display">Descargar el archivo</h3>
+                    <p class="text-zinc-400 text-sm">Hacé click en el botón "Descargar v3.6" más arriba. Se va a guardar en tu carpeta de descargas como <code class="text-emerald-400 font-mono">deep-clean-v3.6.bat</code></p>
+                </div>
+            </div>
+
+            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center font-bold">2</div>
+                <div>
+                    <h3 class="font-semibold mb-1 font-display">Ejecutar como administrador</h3>
+                    <p class="text-zinc-400 text-sm">Click derecho sobre el archivo → "Ejecutar como administrador". <strong class="text-amber-400">Es necesario</strong> para limpiar las carpetas del sistema.</p>
+                </div>
+            </div>
+
+            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center font-bold">3</div>
+                <div>
+                    <h3 class="font-semibold mb-1 font-display">Elegir el modo</h3>
+                    <p class="text-zinc-400 text-sm mb-2">El script te va a preguntar qué modo querés:</p>
+                    <ul class="text-sm text-zinc-400 space-y-1.5 list-disc list-inside ml-4">
+                        <li><strong class="text-zinc-200">Safe:</strong> solo lo básico (5-8 pasos)</li>
+                        <li><strong class="text-zinc-200">Completo:</strong> todo (recomendado, 12 pasos)</li>
+                        <li><strong class="text-zinc-200">Personalizado:</strong> vos elegís paso por paso</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center font-bold">4</div>
+                <div>
+                    <h3 class="font-semibold mb-1 font-display">Crear punto de restauración</h3>
+                    <p class="text-zinc-400 text-sm">Te va a sugerir crear un punto de restauración de Windows. <strong class="text-emerald-400">Recomendamos decirle que sí</strong>. Te da seguridad por si algo no te gusta.</p>
+                </div>
+            </div>
+
+            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center font-bold">5</div>
+                <div>
+                    <h3 class="font-semibold mb-1 font-display">Esperar a que termine</h3>
+                    <p class="text-zinc-400 text-sm">Tarda entre 2 y 5 minutos. Si elegís DISM puede tardar hasta 15 minutos (limpieza muy profunda).</p>
+                </div>
+            </div>
+
+            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center font-bold">6</div>
+                <div>
+                    <h3 class="font-semibold mb-1 font-display">Reiniciar (opcional)</h3>
+                    <p class="text-zinc-400 text-sm">Al final te pregunta si querés reiniciar. Conviene hacerlo para que se note la mejora.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reporte info -->
+        <div class="mt-8 bg-emerald-600/10 border border-emerald-600/30 rounded-2xl p-6 flex items-start gap-4">
+            <div class="text-emerald-400 text-2xl flex-shrink-0">
+                <i class="fa-solid fa-file-lines"></i>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-1 text-emerald-300">Reporte automático</h4>
+                <p class="text-sm text-zinc-300">El script guarda un reporte <code class="font-mono text-xs text-emerald-300">.txt</code> en tu escritorio con todo lo que limpió y cuánto espacio liberó.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== DESCARGAR ==================== -->
+    <section id="descargar" class="max-w-4xl mx-auto px-6 py-20">
+        <div class="bg-gradient-to-br from-emerald-900/40 to-zinc-900 border border-emerald-600/30 rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-600/20 rounded-full blur-3xl"></div>
+            <div class="relative">
+                <i class="fa-solid fa-broom text-5xl text-emerald-400 mb-6"></i>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold mb-4">Descargá Deep Clean v3.6</h2>
+                <p class="text-zinc-400 mb-8 max-w-md mx-auto">100% gratis, sin spyware, sin telemetría. Solo código abierto.</p>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a href="deep-clean-v3.6.bat" download class="btn-glow bg-emerald-600 text-white px-8 py-4 rounded-2xl font-semibold inline-flex items-center justify-center gap-x-3">
+                        <i class="fa-solid fa-download text-xl"></i>
+                        Descargar v3.6
+                    </a>
+                    <a href="https://github.com/elfinalestacercaarg" target="_blank" rel="noopener" class="border border-zinc-700 hover:bg-zinc-900 px-8 py-4 rounded-2xl font-semibold transition-colors inline-flex items-center justify-center gap-x-2">
+                        <i class="fa-brands fa-github"></i>
+                        Ver código en GitHub
+                    </a>
+                </div>
+
+                <div class="mt-8 text-sm text-zinc-500 flex flex-wrap justify-center gap-x-6 gap-y-2">
+                    <span><i class="fa-solid fa-check text-emerald-500"></i> 12 KB</span>
+                    <span><i class="fa-solid fa-check text-emerald-500"></i> Windows 7+</span>
+                    <span><i class="fa-solid fa-check text-emerald-500"></i> Sin instalación</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FAQ ==================== -->
+    <section id="faq" class="max-w-3xl mx-auto px-6 py-20">
+        <div class="text-center mb-12">
+            <span class="text-emerald-500 font-semibold text-sm tracking-widest uppercase">Preguntas frecuentes</span>
+            <h2 class="section-title mt-2">FAQ</h2>
+        </div>
+
+        <div class="space-y-3">
+            <details class="faq-item bg-zinc-900 border border-zinc-800 rounded-2xl group">
+                <summary class="flex items-center justify-between p-5 font-semibold">
+                    ¿Es realmente seguro?
+                    <i class="fa-solid fa-chevron-down faq-icon text-zinc-500"></i>
+                </summary>
+                <div class="px-5 pb-5 text-zinc-400 text-sm">
+                    Sí, 100%. Solo borra archivos basura: temporales, cache, miniaturas, reportes de errores. <strong class="text-zinc-200">No toca</strong> documentos personales, programas instalados, contraseñas guardadas ni configuraciones. Además, el script te ofrece crear un punto de restauración antes por si querés volver atrás.
+                </div>
+            </details>
+
+            <details class="faq-item bg-zinc-900 border border-zinc-800 rounded-2xl group">
+                <summary class="flex items-center justify-between p-5 font-semibold">
+                    ¿Cuánto espacio voy a liberar?
+                    <i class="fa-solid fa-chevron-down faq-icon text-zinc-500"></i>
+                </summary>
+                <div class="px-5 pb-5 text-zinc-400 text-sm">
+                    Depende del estado de tu PC. En promedio se liberan entre <strong class="text-emerald-400">3 y 10 GB</strong>. Si nunca limpiaste el cache de Windows Update, podés liberar hasta 20 GB de una sola pasada.
+                </div>
+            </details>
+
+            <details class="faq-item bg-zinc-900 border border-zinc-800 rounded-2xl group">
+                <summary class="flex items-center justify-between p-5 font-semibold">
+                    ¿Pierdo mis contraseñas del navegador?
+                    <i class="fa-solid fa-chevron-down faq-icon text-zinc-500"></i>
+                </summary>
+                <div class="px-5 pb-5 text-zinc-400 text-sm">
+                    No. El script solo limpia el <strong>cache</strong> (imágenes guardadas, archivos temporales del navegador). Tus contraseñas, marcadores, historial y sesiones quedan intactos.
+                </div>
+            </details>
+
+            <details class="faq-item bg-zinc-900 border border-zinc-800 rounded-2xl group">
+                <summary class="flex items-center justify-between p-5 font-semibold">
+                    ¿Cada cuánto puedo ejecutarlo?
+                    <i class="fa-solid fa-chevron-down faq-icon text-zinc-500"></i>
+                </summary>
+                <div class="px-5 pb-5 text-zinc-400 text-sm">
+                    Recomendamos <strong class="text-zinc-200">una vez al mes</strong>. Si usás muchas aplicaciones pesadas o navegadores, podés correrlo más seguido (cada 2 semanas).
+                </div>
+            </details>
+
+            <details class="faq-item bg-zinc-900 border border-zinc-800 rounded-2xl group">
+                <summary class="flex items-center justify-between p-5 font-semibold">
+                    ¿Por qué necesita permisos de administrador?
+                    <i class="fa-solid fa-chevron-down faq-icon text-zinc-500"></i>
+                </summary>
+                <div class="px-5 pb-5 text-zinc-400 text-sm">
+                    Para acceder a las carpetas del sistema (<code class="font-mono text-xs">C:\Windows\Temp</code>, Windows Update, etc.). Sin admin, sería como un limpiador a medias.
+                </div>
+            </details>
+
+            <details class="faq-item bg-zinc-900 border border-zinc-800 rounded-2xl group">
+                <summary class="flex items-center justify-between p-5 font-semibold">
+                    ¿Funciona en Windows 11?
+                    <i class="fa-solid fa-chevron-down faq-icon text-zinc-500"></i>
+                </summary>
+                <div class="px-5 pb-5 text-zinc-400 text-sm">
+                    Sí, funciona perfecto en Windows 7, 8, 10 y 11. Lo probamos en todas las versiones.
+                </div>
+            </details>
+
+            <details class="faq-item bg-zinc-900 border border-zinc-800 rounded-2xl group">
+                <summary class="flex items-center justify-between p-5 font-semibold">
+                    ¿Qué es DISM y por qué tarda tanto?
+                    <i class="fa-solid fa-chevron-down faq-icon text-zinc-500"></i>
+                </summary>
+                <div class="px-5 pb-5 text-zinc-400 text-sm">
+                    DISM es una herramienta de Microsoft que limpia componentes obsoletos de Windows. Tarda entre 5 y 15 minutos pero <strong class="text-emerald-400">libera mucho espacio</strong> (a veces 5+ GB). Es opcional: el script te pregunta si querés ejecutarlo.
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- ==================== REQUERIMIENTOS ==================== -->
+    <section class="max-w-4xl mx-auto px-6 py-12">
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
+            <h3 class="font-display text-2xl font-bold mb-6 text-center">Requerimientos</h3>
+            <div class="grid sm:grid-cols-3 gap-6 text-center">
+                <div>
+                    <i class="fa-brands fa-windows text-3xl text-emerald-400 mb-3"></i>
+                    <h4 class="font-semibold mb-1">Windows</h4>
+                    <p class="text-sm text-zinc-500">7, 8, 10 o 11</p>
+                </div>
+                <div>
+                    <i class="fa-solid fa-user-shield text-3xl text-emerald-400 mb-3"></i>
+                    <h4 class="font-semibold mb-1">Permisos admin</h4>
+                    <p class="text-sm text-zinc-500">Para acceder al sistema</p>
+                </div>
+                <div>
+                    <i class="fa-solid fa-hard-drive text-3xl text-emerald-400 mb-3"></i>
+                    <h4 class="font-semibold mb-1">Espacio</h4>
+                    <p class="text-sm text-zinc-500">El script pesa 12 KB</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="border-t border-zinc-800 py-12 px-6 mt-12">
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="flex justify-center items-center gap-x-3 mb-4">
+                <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-broom text-white text-sm"></i>
+                </div>
+                <span class="font-display font-bold">DeepClean v3.6</span>
+            </div>
+            <p class="text-sm text-zinc-500 mb-6">
+                Hecho con 💚 por <strong class="text-zinc-300">Eduardo Alzogaray</strong> en Chajarí, Entre Ríos
+            </p>
+            <div class="flex justify-center gap-6 text-sm">
+                <a href="https://github.com/elfinalestacercaarg" target="_blank" rel="noopener" class="text-zinc-500 hover:text-emerald-400 transition-colors">
+                    <i class="fa-brands fa-github mr-2"></i>GitHub
+                </a>
+                <a href="https://wa.me/5493456461557" target="_blank" rel="noopener" class="text-zinc-500 hover:text-emerald-400 transition-colors">
+                    <i class="fa-brands fa-whatsapp mr-2"></i>WhatsApp
+                </a>
+                <a href="mailto:nahuealzogaray01@gmail.com" class="text-zinc-500 hover:text-emerald-400 transition-colors">
+                    <i class="fa-solid fa-envelope mr-2"></i>Email
+                </a>
+            </div>
+            <div class="mt-8 pt-6 border-t border-zinc-800 text-xs text-zinc-600">
+                © 2026 DeepClean • Código abierto • Sin telemetría
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
